@@ -3,20 +3,20 @@ pipeline {
   stages {
     stage('Docker Build') {
       steps {
-        sh "docker build -t maurivg25/podinfo:${env.BUILD_NUMBER} ."
+        sh "docker build -t victoriaperez/podinfo:${env.BUILD_NUMBER} ."
       }
     }
     stage('Docker Push') {
       steps {
         withCredentials([usernamePassword(credentialsId: 'dockerhub', passwordVariable: 'dockerHubPassword', usernameVariable: 'dockerHubUser')]) {
           sh "docker login -u ${env.dockerHubUser} -p ${env.dockerHubPassword}"
-          sh "docker push maurivg25/podinfo:${env.BUILD_NUMBER}"
+          sh "docker push victoriaperez/podinfo:${env.BUILD_NUMBER}"
         }
       }
     }
     stage('Docker Remove Image') {
       steps {
-        sh "docker rmi maurivg25/podinfo:${env.BUILD_NUMBER}"
+        sh "docker rmi victoriaperez/podinfo:${env.BUILD_NUMBER}"
       }
     }
     stage('Apply Kubernetes Files') {
